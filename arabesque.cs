@@ -12,7 +12,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class animate : MonoBehaviour
+public class arabesque : MonoBehaviour
 {
     [SerializeField] private int npoints = 360;
     [SerializeField] private float duration = 10.0f;
