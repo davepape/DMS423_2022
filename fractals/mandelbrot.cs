@@ -27,7 +27,7 @@ public class mandelbrot : MonoBehaviour
             for (int i=0; i < width; i++)
                 {
                 pixels[i+j*width] = Mandelbrot(Mathf.Lerp(min.x, max.x, i/(float)width),
-                							   Mathf.Lerp(min.y, max.y, j/(float)height));
+                                               Mathf.Lerp(min.y, max.y, j/(float)height));
                 }
             }
         texture.SetPixels32(pixels);
