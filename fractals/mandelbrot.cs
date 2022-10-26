@@ -1,4 +1,4 @@
-﻿// mandelbrot.cs
+// mandelbrot.cs
 //
 // Creates a procedural texture consisting of an image of the
 // Mandelbrot set.  For each texel, the function Mandelbrot()
@@ -15,6 +15,8 @@ public class mandelbrot : MonoBehaviour
     [SerializeField] private int width=32;
     [SerializeField] private int height=32;
     [SerializeField] private int maxIter=32;
+    [SerializeField] private Vector2 min = new Vector2(-1,-1);
+    [SerializeField] private Vector2 max = new Vector2(1,1);
 
     void Start()
         {
@@ -24,14 +26,15 @@ public class mandelbrot : MonoBehaviour
             {
             for (int i=0; i < width; i++)
                 {
-                pixels[i+j*width] = Mandelbrot(Mathf.Lerp(-0.5f,-0.25f,i/(float)width),
-                							   Mathf.Lerp(0.5f,0.75f,j/(float)height));
+                pixels[i+j*width] = Mandelbrot(Mathf.Lerp(min.x, max.x, i/(float)width),
+                							   Mathf.Lerp(min.y, max.y, j/(float)height));
                 }
             }
         texture.SetPixels32(pixels);
         GetComponent<Renderer>().material.mainTexture = texture;
         texture.Apply();
         }
+
 
     Color Mandelbrot(float x, float y)
     	{
@@ -46,19 +49,19 @@ public class mandelbrot : MonoBehaviour
     	return Colorize(maxIter);
     	}
 
-    Color Colorize(int i)
-    	{
-    	if (i >= maxIter)
-    		return Color.white;
-    	else if (i > maxIter/2)
-    		return Color.Lerp(Color.red, Color.green, 2*i/((float)maxIter)-1);
-    	else if (i > 0)
-    		return Color.Lerp(Color.yellow, Color.red, 2*i/((float)maxIter));
-    	else
-    		return Color.black;
-    	}
 
-    void Update()
+    Color Colorize(int i)
         {
+        float fraction = i/((float)maxIter);
+        if (i >= maxIter)
+            return Color.white;
+        else if (fraction > 0.5f)
+            return Color.Lerp(Color.green, Color.blue, 2*(fraction-0.5f));
+        else if (fraction > 0.25f)
+            return Color.Lerp(Color.red, Color.green, 4*(fraction-0.25f));
+        else if (fraction > 0)
+            return Color.Lerp(Color.yellow, Color.red, 4*fraction);
+        else
+            return Color.black;
         }
 }
