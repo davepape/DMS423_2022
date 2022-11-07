@@ -7,12 +7,14 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Networking;
 using JSONObject = Defective.JSON.JSONObject;
+using TMPro;
 
 public class plotQuakes : MonoBehaviour
 {
     [SerializeField] private string url = "https://earthquake.usgs.gov/earthquakes/feed/v1.0/summary/4.5_day.geojson";
     [SerializeField] private GameObject prefab;
     [SerializeField] private float radius = 1.0f;
+    [SerializeField] private TextMeshProUGUI textGui;
 
     void Start()
         {
@@ -42,6 +44,13 @@ public class plotQuakes : MonoBehaviour
                 marker.transform.localPosition = pos;
                 float size = mag/10.0f;
                 marker.transform.localScale = new Vector3(size,size,size);
+                //marker.AddComponent<quakeData>();
+                quakeData markerData = marker.GetComponent<quakeData>();
+                if (markerData)
+                    {
+                    markerData.title = data["features"][i]["properties"]["title"].stringValue;
+                    markerData.textGui = textGui;
+                    }
                 }
             }
         }
