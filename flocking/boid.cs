@@ -46,11 +46,13 @@ public class boid : MonoBehaviour
         if (!Separate(out acceleration))
         {
             if (!Align(out acceleration))
+            {
                 if (!Cohere(out acceleration))
                 {
                     acceleration = Random.Range(-maxAcceleration,maxAcceleration) * Vector3.Cross(Vector3.up, velocity.normalized);
                     acceleration.y = 0;
                 }
+            }
         }
         return acceleration;
     }
