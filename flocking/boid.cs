@@ -1,5 +1,5 @@
 /* boid.cs - Example of flocking technique.
-  This is a very imperfect implementation.  It was made as a quick demonstation, and would need improvements for real use.
+  This is very much a less-than-perfect implementation.  It was made as a quick demonstation, and would need improvements for real use
   */
 using System.Collections;
 using System.Collections.Generic;
@@ -8,7 +8,7 @@ using UnityEngine;
 public class boid : MonoBehaviour
 {   
     static List<boid> allBoids;
-    private Vector3 velocity = Vector3.forward;
+    [SerializeField] private Vector3 velocity = Vector3.forward;
     [SerializeField] private float visionRange = 10.0f;
     [SerializeField] private float separationDistance = 1.0f;
     [SerializeField] private float maxAcceleration = 1.0f;
@@ -46,13 +46,11 @@ public class boid : MonoBehaviour
         if (!Separate(out acceleration))
         {
             if (!Align(out acceleration))
-            {
                 if (!Cohere(out acceleration))
                 {
-                    acceleration = Random.insideUnitSphere * maxAcceleration / 10.0f;
+                    acceleration = Random.Range(-maxAcceleration,maxAcceleration) * Vector3.Cross(Vector3.up, velocity.normalized);
                     acceleration.y = 0;
                 }
-            }
         }
         return acceleration;
     }
