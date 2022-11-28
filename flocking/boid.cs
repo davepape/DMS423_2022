@@ -59,8 +59,8 @@ public class boid : MonoBehaviour
 
     private bool Separate(out Vector3 acceleration)
     {
-        Vector3 separationSum = Vector3.zero;
-        int separationNumNeighbors = 0;
+        Vector3 positionSum = Vector3.zero;
+        int numNeighbors = 0;
 
         acceleration = Vector3.zero;
         foreach (boid b in allBoids)
@@ -69,24 +69,21 @@ public class boid : MonoBehaviour
                 float d = Vector3.Distance(transform.position, b.transform.position);
                 if (d < separationDistance)
                 {
-                    separationSum += b.transform.position;
-                    separationNumNeighbors++;
+                    positionSum += b.transform.position;
+                    numNeighbors++;
                 }
             }
             
-        if (separationNumNeighbors > 0)
+        if (numNeighbors > 0)
         {
-            Vector3 separationPosition = separationSum / separationNumNeighbors;
-            Vector3 separationDiff = transform.position - separationPosition;
-            if (separationDiff.magnitude > maxAcceleration)
-                separationDiff = maxAcceleration * separationDiff.normalized;
-            acceleration = separationDiff;
+            Vector3 avgPosition = positionSum / numNeighbors;
+            Vector3 diff = transform.position - avgPosition;
+            if (diff.magnitude > maxAcceleration)
+                diff = maxAcceleration * diff.normalized;
+            acceleration = diff;
             return true;
         }
-        else
-        {
-            return false;
-        }
+        return false;
     }
 
     private bool Align(out Vector3 acceleration)
