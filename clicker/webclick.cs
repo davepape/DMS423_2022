@@ -18,7 +18,6 @@ public class webclick : MonoBehaviour
 
     void OnMouseDown()
     {
-        print("click");
         StartCoroutine(DoScaling());
         StartCoroutine(SendClick());
     }
